@@ -6,9 +6,9 @@ const DEFS = {
 }
 
 function pickDef(capacity) {
-  if (capacity <= 3) return 'S'
-  if (capacity <= 5) return 'M'
-  if (capacity <= 8) return 'L'
+  if (capacity <= 2) return 'S'
+  if (capacity <= 4) return 'M'
+  if (capacity <= 6) return 'L'
   return 'XL'
 }
 
@@ -88,16 +88,19 @@ export function buildBuckets(total, bucketSize) {
 }
 
 export function bucketSceneLayout(n) {
-  if (n === 0) return []
-  if (n <= 3) return [n]
-  if (n === 4) return [2, 2]
-  if (n === 5) return [3, 2]
-  if (n === 6) return [3, 3]
-  if (n === 7) return [3, 3, 1]
-  if (n === 8) return [3, 3, 2]
-  if (n === 9) return [3, 3, 3]
-  const rows = []
-  let rem = n
-  while (rem > 0) { rows.unshift(Math.min(3, rem)); rem -= 3 }
-  return rows
+  const LAYOUT = {
+    1:  [1],
+    2:  [2],
+    3:  [1, 2],
+    4:  [2, 2],
+    5:  [2, 3],
+    6:  [3, 3],
+    7:  [3, 4],
+    8:  [4, 4],
+    9:  [3, 3, 3],
+    10: [2, 4, 4],
+    11: [3, 4, 4],
+    12: [4, 4, 4],
+  }
+  return LAYOUT[n] || [n]
 }

@@ -10,7 +10,7 @@ const bucketRows = computed(() => {
   const sizes = bucketSceneLayout(props.buckets.length)
   const rows  = []
   let idx     = 0
-  for (let i = sizes.length - 1; i >= 0; i--) {
+  for (let i = 0; i < sizes.length; i++) {
     rows.push(props.buckets.slice(idx, idx + sizes[i]))
     idx += sizes[i]
   }

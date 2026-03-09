@@ -14,11 +14,10 @@ defineEmits(['switchMode'])
 
 <template>
   <div class="task-zone">
-    <div class="task-number">{{ currentTask ? currentTask.result : '?' }}</div>
-
-    <div class="vis-mode-switcher">
+    <div class="task-header">
       <button class="vis-btn" :class="{ active: visualMode === 'rows' }"
               @click="$emit('switchMode', 'rows')">🍎 Rows</button>
+      <div class="task-number">{{ currentTask ? currentTask.result : '?' }}</div>
       <button class="vis-btn" :class="{ active: visualMode === 'bucket' }"
               @click="$emit('switchMode', 'bucket')">🪣 Bucket</button>
     </div>
