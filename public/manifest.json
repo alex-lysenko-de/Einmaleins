@@ -2,7 +2,7 @@
   "name": "Monster Apple Training",
   "short_name": "MonsterApple",
   "description": "Lerne die Multiplikation mit Monstern!",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#0d1117",
