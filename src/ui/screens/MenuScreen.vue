@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from 'vue'
-import { useGame } from '../../composables/useGame.js'
-import { LEVELS }  from '../../game/data/levels.js'
+import { useGame }   from '../../composables/useGame.js'
+import { useMemory } from '../../composables/useMemory.js'
+import { LEVELS }    from '../../game/data/levels.js'
 
-const { startGame } = useGame()
-const selectedLevel = ref(2)
+const { startGame }   = useGame()
+const { startMemory } = useMemory()
+const selectedLevel   = ref(2)
 </script>
 
 <template>
@@ -34,6 +36,9 @@ const selectedLevel = ref(2)
       </div>
     </div>
 
-    <button class="play-btn" @click="startGame(selectedLevel)">▶ Spielen</button>
+    <div class="menu-play-btns">
+      <button class="play-btn" @click="startGame(selectedLevel)">▶ Spielen</button>
+      <button class="play-btn memory-btn" @click="startMemory(selectedLevel)">🧩 Memory</button>
+    </div>
   </div>
 </template>
