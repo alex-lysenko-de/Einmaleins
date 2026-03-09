@@ -1,7 +1,7 @@
 <script setup>
-import { useGame } from '../../composables/useGame.js'
+import { useAppleAnimation } from '../../composables/useAppleAnimation.js'
 
-const { flyingApples, splatFragments } = useGame()
+const { flyingApples, splatFragments } = useAppleAnimation()
 </script>
 
 <template>

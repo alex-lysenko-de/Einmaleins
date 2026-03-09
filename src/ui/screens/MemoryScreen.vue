@@ -1,46 +1,67 @@
 <script setup>
-import { useMemory } from '../../composables/useMemory.js'
+import { useMemory }  from '../../composables/useMemory.js'
+import MonsterZone    from '../components/MonsterZone.vue'
 
-const { state, selectQuestion, selectAnswer, goMenu } = useMemory()
+const {
+  state,
+  currentMonster,
+  monsterShaking,
+  playerShaking,
+  selectQuestion,
+  selectAnswer,
+  goMenu,
+} = useMemory()
 </script>
 
 <template>
-  <div class="memory-screen">
-    <div class="memory-header">
+  <div class="game-screen">
+    <div class="game-header">
       <button class="menu-back-btn" @click="goMenu">← Menü</button>
-      <div class="level-badge">×{{ state.level }}</div>
-      <div class="memory-lives">
-        <span v-for="i in 3" :key="i" class="memory-life" :class="{ lost: i > state.lives }">❤️</span>
-      </div>
+      <div class="level-badge">Memory ×{{ state.level }}</div>
     </div>
 
-    <!-- Answer cards (shuffled) -->
-    <div class="memory-grid">
-      <div
+    <MonsterZone
+      :monster="currentMonster"
+      :monsterHP="state.monsterHP"
+      :playerHP="state.playerHP"
+      :monsterShaking="monsterShaking"
+      :playerShaking="playerShaking"
+    />
+
+    <!-- Answer cards (shuffled numbers) -->
+    <div class="cards-zone memory-answers">
+      <button
         v-for="card in state.answers" :key="card.id"
-        class="memory-card answer-card"
-        :class="[card.state, { flipped: card.state === 'revealed' }]"
+        class="card-btn memory-answer-card"
+        :class="{
+          active:   card.state === 'active',
+          revealed: card.state === 'revealed',
+          matched:  card.state === 'matched',
+        }"
         @click="selectAnswer(card)"
       >
         <div class="memory-card-inner">
-          <div class="memory-card-front">{{ card.value }}</div>
-          <div class="memory-card-back">{{ card.matchValue }}</div>
+          <span class="memory-card-front card-eq">{{ card.value }}</span>
+          <span class="memory-card-back  card-eq">{{ card.matchValue }}</span>
         </div>
-      </div>
+      </button>
     </div>
 
     <div class="memory-divider"></div>
 
-    <!-- Question cards (fixed order) -->
-    <div class="memory-grid">
-      <div
+    <!-- Question cards (fixed equations) -->
+    <div class="cards-zone">
+      <button
         v-for="card in state.questions" :key="card.id"
-        class="memory-card question-card"
-        :class="card.state"
+        class="card-btn memory-question-card"
+        :class="{
+          active:  card.state === 'active',
+          matched: card.state === 'matched',
+        }"
         @click="selectQuestion(card)"
       >
-        {{ card.value }}
-      </div>
+        <span class="card-eq">{{ card.value }}</span>
+      </button>
     </div>
   </div>
 </template>

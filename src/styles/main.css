@@ -692,122 +692,62 @@ html, body {
 
 /* ============ MEMORY SCREEN ============ */
 
-.memory-screen {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px 0;
-}
-
-.memory-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
-.memory-lives {
-  display: flex;
-  gap: 4px;
-}
-
-.memory-life {
-  font-size: 1.3rem;
-  transition: all 0.3s;
-}
-
-.memory-life.lost {
-  filter: grayscale(1) opacity(0.3);
-}
-
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
 .memory-divider {
   height: 2px;
   background: var(--surface2);
   border-radius: 2px;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
-/* Card base */
-.memory-card {
-  aspect-ratio: 1.4;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
-  user-select: none;
-  border: 2px solid transparent;
-}
-
-/* Answer cards */
-.answer-card {
-  background: var(--surface);
-  border-color: var(--surface2);
+/* Answer cards — accent color to distinguish from question cards */
+.memory-answer-card .card-eq {
   color: var(--accent2);
-  font-size: 1.4rem;
-  perspective: 600px;
 }
 
-/* Question cards */
-.question-card {
-  background: var(--surface);
-  border-color: var(--surface2);
-  color: var(--text);
-  font-size: 1rem;
-}
-
-/* States */
-.memory-card.active {
+/* Active state (selected) */
+.card-btn.active {
   border-color: var(--accent);
-  box-shadow: 0 0 14px rgba(255,107,53,0.5);
-  transform: scale(1.06);
+  box-shadow: 0 0 14px rgba(255,107,53,0.4);
+  transform: translateY(-2px) scale(1.04);
 }
 
-.memory-card.matched {
+/* Matched — fade out, no interaction */
+.card-btn.matched {
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.85);
+  transform: scale(0.88);
 }
 
 /* Flip animation for answer cards */
+.memory-answer-card {
+  perspective: 600px;
+}
+
 .memory-card-inner {
-  width: 100%;
-  height: 100%;
+  display: contents;
+}
+
+.memory-answer-card .memory-card-inner {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   transform-style: preserve-3d;
   transition: transform 0.35s;
   position: relative;
 }
 
-.answer-card.flipped .memory-card-inner {
-  transform: rotateY(180deg);
-}
-
 .memory-card-front,
 .memory-card-back {
-  position: absolute;
   backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
 }
 
 .memory-card-back {
+  position: absolute;
   transform: rotateY(180deg);
-  font-size: 0.95rem;
   color: var(--green);
+}
+
+.card-btn.revealed .memory-card-inner {
+  transform: rotateY(180deg);
 }

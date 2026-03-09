@@ -1,18 +1,27 @@
-import { reactive } from 'vue'
-import { createMemoryCards }        from '../game/modes/memoryMode.js'
-import { playSuccess, playError }   from '../game/audio/audioEngine.js'
-import { router }                   from '../router/index.js'
+import { reactive, computed } from 'vue'
+import { createMemoryCards }              from '../game/modes/memoryMode.js'
+import { monsterForLevel }                from '../game/data/monsters.js'
+import { playSuccess, playError, playVictory } from '../game/audio/audioEngine.js'
+import { useAppleAnimation, spawnApple }  from './useAppleAnimation.js'
+import { useConfetti }                    from './useConfetti.js'
+import { router }                         from '../router/index.js'
+
+const MAX_HP = 9
 
 // ── Singleton ─────────────────────────────────────────────────────────────────
 const state = reactive({
-  level:         2,
-  questions:     [],
-  answers:       [],
+  level:          2,
+  questions:      [],
+  answers:        [],
   activeQuestion: null,
-  lives:         3,
-  pairsFound:    0,
-  locked:        false,
+  monsterHP:      MAX_HP,
+  playerHP:       MAX_HP,
+  locked:         false,
 })
+
+const currentMonster = computed(() => monsterForLevel(state.level))
+const { monsterShaking, playerShaking } = useAppleAnimation()
+const { launchConfetti } = useConfetti()
 
 // ── Public composable ─────────────────────────────────────────────────────────
 export function useMemory() {
@@ -24,8 +33,8 @@ export function useMemory() {
       questions,
       answers,
       activeQuestion: null,
-      lives:          3,
-      pairsFound:     0,
+      monsterHP:      MAX_HP,
+      playerHP:       MAX_HP,
       locked:         false,
     })
     router.push({ name: 'memory' })
@@ -33,13 +42,11 @@ export function useMemory() {
 
   function selectQuestion(card) {
     if (state.locked || card.state === 'matched') return
-    // Toggle off if same card clicked again
     if (state.activeQuestion?.id === card.id) {
       card.state = 'hidden'
       state.activeQuestion = null
       return
     }
-    // Deselect previous
     if (state.activeQuestion) state.activeQuestion.state = 'hidden'
     card.state = 'active'
     state.activeQuestion = card
@@ -55,29 +62,33 @@ export function useMemory() {
     a.state = 'active'
 
     if (q.pairId === a.pairId) {
-      // Correct pair
+      // Correct pair — apple flies to monster
       playSuccess()
+      spawnApple(true)
       setTimeout(() => {
         q.state = 'matched'
         a.state = 'matched'
         state.activeQuestion = null
-        state.pairsFound++
+        state.monsterHP--
         state.locked = false
-        if (state.pairsFound === 9) {
+        if (state.monsterHP <= 0) {
+          playVictory()
+          launchConfetti()
           router.push({ name: 'memory-victory' })
         }
       }, 500)
     } else {
-      // Wrong — flip answer card to reveal its true equation
+      // Wrong — apple flies to player, reveal answer card
       playError()
+      spawnApple(false)
       a.state = 'revealed'
       setTimeout(() => {
         a.state = 'hidden'
         q.state = 'hidden'
         state.activeQuestion = null
-        state.lives--
+        state.playerHP--
         state.locked = false
-        if (state.lives <= 0) {
+        if (state.playerHP <= 0) {
           router.push({ name: 'memory-gameover' })
         }
       }, 1300)
@@ -92,5 +103,15 @@ export function useMemory() {
     startMemory(state.level)
   }
 
-  return { state, startMemory, selectQuestion, selectAnswer, goMenu, retry }
+  return {
+    state,
+    currentMonster,
+    monsterShaking,
+    playerShaking,
+    startMemory,
+    selectQuestion,
+    selectAnswer,
+    goMenu,
+    retry,
+  }
 }
