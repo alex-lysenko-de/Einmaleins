@@ -1,7 +1,7 @@
 {
-  "name": "Monster Apple Training",
-  "short_name": "MonsterApple",
-  "description": "Lerne die Multiplikation mit Monstern!",
+  "name": "EinMalEins mit Spaß",
+  "short_name": "EinMalEins",
+  "description": "Einfach. Schnell. Gelernt.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0d1117",

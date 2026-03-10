@@ -17,8 +17,8 @@ const selectedLevel   = ref(2)
     </div>
 
     <div class="menu-logo">
-      <h1>🍎 Monster Apple Training</h1>
-      <div class="subtitle">Lerne die Multiplikation!</div>
+      <h1>EinMalEins mit Spaß</h1>
+      <div class="subtitle">Einfach. Schnell. Gelernt.</div>
     </div>
 
     <div class="level-section">
@@ -37,8 +37,8 @@ const selectedLevel   = ref(2)
     </div>
 
     <div class="menu-play-btns">
-      <button class="play-btn" @click="startGame(selectedLevel)">▶ Spielen</button>
-      <button class="play-btn memory-btn" @click="startMemory(selectedLevel)">🧩 Memory</button>
+      <button class="play-btn" @click="startGame(selectedLevel)">Spiel 1</button>
+      <button class="play-btn memory-btn" @click="startMemory(selectedLevel)">Spiel 2</button>
     </div>
   </div>
 </template>
