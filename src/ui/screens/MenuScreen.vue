@@ -37,8 +37,8 @@ const selectedLevel   = ref(2)
     </div>
 
     <div class="menu-play-btns">
-      <button class="play-btn" @click="startGame(selectedLevel)">Spiel 1</button>
-      <button class="play-btn memory-btn" @click="startMemory(selectedLevel)">Spiel 2</button>
+      <button class="play-btn" @click="startGame(selectedLevel)">Spiel&nbsp;1</button>
+      <button class="play-btn memory-btn" @click="startMemory(selectedLevel)">Spiel&nbsp;2</button>
     </div>
   </div>
 </template>
