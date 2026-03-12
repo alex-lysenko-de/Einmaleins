@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/einmaleins/',
   plugins: [
     vue(),
     VitePWA({
@@ -12,6 +13,5 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
       },
     }),
-  ],
-  base: '/einmaleins/'
+  ]
 })
