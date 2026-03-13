@@ -1,15 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/einmaleins/icons/icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0d1117" />
-    <link rel="manifest" href="/einmaleins/manifest.json" />
-    <title>EinMalEins mit Spaß</title>
-    <script type="module" crossorigin src="/einmaleins/assets/index-VRcktE8p.js"></script>
+
+    <title>Einmaleins – Mathe-Lernspiel</title>
+    <meta name="description" content="Spielerisch das kleine Einmaleins lernen – Monster besiegen, Memory spielen und Schnelltests meistern!" />
+
+    <!-- PWA: relativer Pfad → funktioniert nach Vite-Build auf gh-pages korrekt -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#ff6b35" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Einmaleins" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <script type="module" crossorigin src="/einmaleins/assets/index-DC_JgVXO.js"></script>
     <link rel="stylesheet" crossorigin href="/einmaleins/assets/index-D-q28gcK.css">
-  <script id="vite-plugin-pwa:register-sw" src="/einmaleins/registerSW.js"></script></head>
+  </head>
   <body>
     <div id="app"></div>
   </body>

@@ -1,1 +1,83 @@
-if(!self.define){let e,s={};const n=(n,r)=>(n=new URL(n+".js",r).href,s[n]||new Promise(s=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=s,document.head.appendChild(e)}else e=n,importScripts(n),s()}).then(()=>{let e=s[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e}));self.define=(r,i)=>{const l=e||("document"in self?document.currentScript.src:"")||location.href;if(s[l])return;let o={};const u=e=>n(e,l),t={module:{uri:l},exports:o,require:u};s[l]=Promise.all(r.map(e=>t[e]||u(e))).then(e=>(i(...e),o))}}define(["./workbox-8c29f6e4"],function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"vite.svg",revision:"8e3a10e157f75ada21ab742c022d5430"},{url:"registerSW.js",revision:"b6040c85baa9c81b8c67ad8743d5cf40"},{url:"index.html",revision:"254de9c4a8226fc8fe3ad41cd56e9df4"},{url:"icons/icon-512.png",revision:"911bdb6be4f4c18694d3a3de3571a86a"},{url:"icons/icon-192.png",revision:"17271bc3885952e8214883c6368e2601"},{url:"assets/useMemory-CDZ9EjMZ.js",revision:null},{url:"assets/useGame-Cg9O5WqS.js",revision:null},{url:"assets/useExam-DIelG3W4.js",revision:null},{url:"assets/monsters-59jV-Cfb.js",revision:null},{url:"assets/index-VRcktE8p.js",revision:null},{url:"assets/index-D-q28gcK.css",revision:null},{url:"assets/audioEngine-Bcn7Nntz.js",revision:null},{url:"assets/VictoryScreen-D2mQ4Ac7.js",revision:null},{url:"assets/MonsterZone-DkFGJb9U.js",revision:null},{url:"assets/MenuScreen-5poI4tj_.js",revision:null},{url:"assets/MemoryVictoryScreen-yexQWEMR.js",revision:null},{url:"assets/MemoryScreen-D8NFy9UC.js",revision:null},{url:"assets/MemoryGameOverScreen-BQ6eC4_h.js",revision:null},{url:"assets/GameScreen-DD4ijNm-.js",revision:null},{url:"assets/ExamScreen-CxdOyuXM.js",revision:null},{url:"assets/ExamResultScreen-BmRdGzG6.js",revision:null}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html")))});
+// Service Worker – Einmaleins PWA
+// Strategie: Network-first mit Cache-Fallback für alle eigenen Assets.
+// Kein statisches PRECACHE_URLS – Vite generiert gehashte Dateinamen,
+// die wir hier zur Build-Zeit nicht kennen können.
+
+const CACHE_VERSION = 'v1'
+const CACHE_NAME = `einmaleins-${CACHE_VERSION}`
+
+// Nur diese wenigen stabilen URLs beim Install vorab laden (App Shell)
+const SHELL_URLS = [
+  '/einmaleins/',
+  '/einmaleins/index.html',
+  '/einmaleins/manifest.json',
+]
+
+// ── Install: App Shell precachen ────────────────────────────────────────────
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll(SHELL_URLS))
+      .then(() => self.skipWaiting())
+  )
+})
+
+// ── Activate: alte Caches löschen ───────────────────────────────────────────
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key.startsWith('einmaleins-') && key !== CACHE_NAME)
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  )
+})
+
+// ── Fetch: Stale-While-Revalidate für alle eigenen Requests ─────────────────
+self.addEventListener('fetch', (event) => {
+  const { request } = event
+
+  if (request.method !== 'GET') return
+
+  const url = new URL(request.url)
+  if (url.origin !== self.location.origin) return
+
+  // Vite-Assets haben Hash im Dateinamen → Cache-first (unveränderlich)
+  const isHashedAsset = url.pathname.includes('/assets/')
+
+  if (isHashedAsset) {
+    // Cache-first: einmal gecacht, nie wieder laden
+    event.respondWith(
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            if (response.ok) {
+              const clone = response.clone()
+              caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
+            }
+            return response
+          })
+      )
+    )
+  } else {
+    // Network-first mit Cache-Fallback (für index.html, manifest, icons)
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone()
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
+          }
+          return response
+        })
+        .catch(() => caches.match(request))
+    )
+  }
+})
