@@ -1,47 +1,79 @@
-# Monster Apple Training — Замысел и намерения
+# 🧮 Einmaleins – Interaktives Mathe-Lernspiel
 
-## Идея игры
+Ein spielerisches Lernprogramm für Grundschulkinder zum Üben des kleinen Einmaleins (2 × 2 bis 9 × 9).
 
-Обучающая игра для детей на таблицу умножения. Ключевая механика: **ребёнок видит результат** (большое число), и должен **найти пару множителей** среди карточек. Карточка показывает только `A × B` — без ответа. Это принципиально: показывать ответ на карточке лишает задачу смысла.
-
-Визуализация (яблоки/корзины) объясняет **смысл умножения** — не просто абстрактные числа, а конкретные группы объектов. Ребёнок видит, почему `3 × 4 = 12`: три ряда по четыре яблока.
+🌐 **[Jetzt spielen → alex-lysenko-de.github.io/einmaleins](https://alex-lysenko-de.github.io/einmaleins/#/)**
 
 ---
 
-## Боевая метафора
+## 🎮 Spielmodi
 
-Игра намеренно обёрнута в "бой" с монстром, чтобы поддерживать мотивацию. Правильный ответ — ребёнок бросает яблоко в монстра. Неправильный — монстр бросает яблоко обратно в ребёнка. Оба персонажа имеют HP, оба могут пострадать.
+### 👾 Kampf gegen Monster
+Beantworte Multiplikationsaufgaben richtig, um einem Monster Schaden zuzufügen – bevor es dich besiegt! Für jede Einmaleins-Reihe (2–9) wartet ein anderes Monster, darunter Alien Grumpy, Zombie Karl, Drachen Zola und weitere.
 
-**Важно:** тряска персонажа происходит в момент попадания яблока, а не в момент нажатия кнопки. Это причинно-следственная связь — сначала полёт, потом удар.
+### 🃏 Memory-Spiel
+Finde passende Kartenpaare (Aufgabe + Ergebnis) und trainiere dabei gleichzeitig dein Gedächtnis und die Rechenfertigkeiten.
 
-Каждый уровень = новый монстр (меняется визуально при смене уровня). 9 карточек = 9 HP у монстра — не случайно, это прямое соответствие.
-
----
-
-## Два режима визуализации
-
-**Rows** — яблоки сеткой `A строк × B столбцов`. Показывает саму структуру умножения: что значит "три раза по четыре".
-
-**Bucket** — яблоки сгруппированы в вёдра (или корзины), каждое ведро вмещает `A` яблок (множитель текущей задачи). Показывает другой способ понимания: умножение как повторение групп. Корзины намеренно полупрозрачные — яблоки видны сквозь стенки.
-
-Переключение мгновенное, без перезагрузки задания — ребёнок может смотреть на одно и то же число в разных представлениях.
+### ⚡ Schnelltest
+Beantworte alle Aufgaben einer Reihe so schnell wie möglich hintereinander und sieh, wie gut du abschneidest.
 
 ---
 
-## Уровни
+## ✨ Features
 
-Уровень = множитель от ×2 до ×9. На каждом уровне 9 карточек: `level × 2` … `level × 10`. Задания выдаются случайно из нераскрытых карточек — ребёнок не знает, что будет следующим.
+- 🎯 Alle Einmaleins-Reihen von **2 bis 9**
+- 🖼️ Visuelle Hilfen: Äpfel-Animationen und Reihen-/Spalten-Darstellung zum Verstehen der Multiplikation
+- 🎵 Soundeffekte und Audiobegleitung
+- 🎉 Konfetti-Animationen bei Erfolg
+- 📱 Responsive Design – funktioniert auf Desktop und Mobilgeräten
+- 🔀 Hash-basiertes Routing (keine Serverkonfiguration nötig)
 
 ---
 
-## Звук
+## 🛠️ Technologien
 
-Все звуки генерируются программно через Web Audio API — никаких файлов. Это сознательное решение для автономности (один `.html` файл, работает офлайн). Звук успеха — аккорд Do-Mi-Sol, звук ошибки — нисходящий глиссандо, победа — маленькая мелодия.
+- **[Vue 3](https://vuejs.org/)** – Composition API, `<script setup>`
+- **[Vue Router](https://router.vuejs.org/)** – Hash History für GitHub Pages
+- **[Vite](https://vitejs.dev/)** – Build-Tool und Dev-Server
 
 ---
 
-## Технические ограничения — намеренные 
+## 🚀 Lokale Entwicklung
 
-- Один `.html` файл без сборки — чтобы игру можно было просто открыть в браузере, без установки и сервера.
-- Vue 3 через CDN — фреймворк нужен для реактивности (HP, карточки, анимации)
-- планируется переход на Vite + VueJS и создание полностью автономного PWA приложения
+```bash
+# Abhängigkeiten installieren
+npm install
+
+# Entwicklungsserver starten
+npm run dev
+
+# Produktions-Build erstellen
+npm run build
+```
+
+---
+
+## 📁 Projektstruktur
+
+```
+src/
+├── game/
+│   ├── audio/        # Audio-Engine
+│   ├── data/         # Level- und Monster-Definitionen
+│   ├── engine/       # Spiellogik (GameEngine)
+│   ├── mechanics/    # Karten, Aufgaben, Kampf, Buckets
+│   ├── modes/        # Memory-Modus
+│   └── state/        # Reaktiver Spielzustand
+├── ui/
+│   ├── components/   # Spielkomponenten (Karten, Fortschritt, Monster, …)
+│   ├── menu/         # Spielauswahl und Level-Picker
+│   └── screens/      # Vollbild-Ansichten (Menü, Spiel, Sieg, …)
+├── composables/      # Vue Composables (useGame, useMemory, useExam, …)
+└── router/           # Vue Router Konfiguration
+```
+
+---
+
+## 📄 Lizenz
+
+MIT
