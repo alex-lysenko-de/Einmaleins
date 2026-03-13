@@ -11,5 +11,7 @@ export const router = createRouter({
     { path: '/memory',         name: 'memory',         component: () => import('../ui/screens/MemoryScreen.vue') },
     { path: '/memory-victory', name: 'memory-victory', component: () => import('../ui/screens/MemoryVictoryScreen.vue') },
     { path: '/memory-gameover',name: 'memory-gameover',component: () => import('../ui/screens/MemoryGameOverScreen.vue') },
+    { path: '/exam',        name: 'exam',        component: () => import('../ui/screens/ExamScreen.vue') },
+    { path: '/exam-result', name: 'exam-result', component: () => import('../ui/screens/ExamResultScreen.vue') },
   ],
 })

@@ -751,3 +751,205 @@ html, body {
 .card-btn.revealed .memory-card-inner {
   transform: rotateY(180deg);
 }
+
+/* ============ EXAM SCREEN ============ */
+
+.exam-screen {
+  gap: 12px;
+}
+
+.exam-progress-wrap {
+  background: var(--surface2);
+  border-radius: 99px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.exam-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.exam-question-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px 20px 20px;
+  border: 1px solid var(--surface2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.exam-q-counter {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.exam-question-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 9vw, 2.6rem);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exam-input-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 4px 16px;
+  min-width: 76px;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 9vw, 2.6rem);
+  color: var(--text);
+  border: 2px solid transparent;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.exam-input-display.has-value { border-color: var(--accent); }
+.exam-input-display.correct   { background: rgba(6,214,160,0.15); border-color: var(--green) !important; color: var(--green); }
+.exam-input-display.wrong     { background: rgba(239,71,111,0.15); border-color: var(--red)   !important; color: var(--red); }
+.exam-input-display.shaking   { animation: shake 0.35s ease; }
+
+.exam-placeholder {
+  color: var(--muted);
+  font-size: 0.7em;
+}
+
+.exam-apples-viz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.exam-apple-row {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.exam-apple {
+  font-size: clamp(1rem, 4.5vw, 1.4rem);
+  line-height: 1;
+  animation: examApplePop 0.2s ease both;
+}
+
+@keyframes examApplePop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.exam-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.exam-np-btn {
+  background: var(--surface2);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  height: 60px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.12s;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exam-np-btn:hover  { border-color: var(--accent); transform: scale(1.05); }
+.exam-np-btn:active { transform: scale(0.95); }
+
+.exam-np-del {
+  color: var(--red);
+  font-size: 1.4rem;
+}
+
+.exam-np-enter {
+  background: var(--accent);
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(255,107,53,0.35);
+}
+
+.exam-np-enter:hover {
+  background: #ff7a4a;
+  border-color: transparent;
+}
+
+/* ============ EXAM RESULT SCREEN ============ */
+
+.exam-result-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 32px 16px;
+  gap: 16px;
+}
+
+.exam-result-emoji {
+  font-size: 5rem;
+  animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.exam-result-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.2rem;
+  color: var(--accent2);
+  text-shadow: 0 0 30px rgba(255,209,102,0.5);
+}
+
+.exam-result-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.exam-result-stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 8px 0;
+}
+
+.exam-stat-box {
+  background: var(--surface);
+  border: 1px solid var(--surface2);
+  border-radius: 16px;
+  padding: 16px 20px;
+  min-width: 80px;
+}
+
+.exam-stat-val {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.8rem;
+  color: var(--accent2);
+}
+
+.exam-stat-lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

@@ -37,7 +37,7 @@ const bucketRows = computed(() => {
                   style="user-select:none">🍎</text>
           </g>
           <polygon :points="bucket.outerPoly"
-                   fill="#1d4ed8" fill-opacity="0.45"
+                   fill="#1d4ed8" fill-opacity="0.15"
                    stroke="#60a5fa" stroke-width="2.5" />
           <line :x1="bucket.rimX0" :y1="bucket.rimY"
                 :x2="bucket.rimX1" :y2="bucket.rimY"
