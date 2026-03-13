@@ -19,9 +19,9 @@ const bucketRows = computed(() => {
 </script>
 
 <template>
-  <div class="bucket-scene">
-    <div class="bucket-row" v-for="(row, ri) in bucketRows" :key="ri">
-      <div class="bucket-svg-wrap" v-for="bucket in row" :key="bucket.id">
+  <div class="flex flex-col items-center gap-1.5 w-full">
+    <div class="flex gap-2 justify-center items-end" v-for="(row, ri) in bucketRows" :key="ri">
+      <div v-for="bucket in row" :key="bucket.id">
         <svg :width="bucket.svgW" :height="bucket.svgW + bucket.heapH"
              style="overflow:visible; display:block;">
           <defs>

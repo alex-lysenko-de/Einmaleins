@@ -14,10 +14,17 @@ const {
 </script>
 
 <template>
-  <div class="game-screen">
-    <div class="game-header">
-      <button class="menu-back-btn" @click="goMenu">← Menü</button>
-      <div class="level-badge">Memory ×{{ state.level }}</div>
+  <div class="flex flex-col py-3 pb-5 min-h-screen gap-2.5">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+      <button
+        class="bg-surface border border-surface2 rounded-xl px-3.5 py-2 text-muted font-nunito text-sm font-bold transition-all hover:text-white hover:border-accent"
+        @click="goMenu"
+      >← Menü</button>
+      <div class="bg-surface border border-surface2 rounded-xl px-4 py-2 font-fredoka text-base text-accent2">
+        Memory ×{{ state.level }}
+      </div>
     </div>
 
     <MonsterZone
@@ -29,39 +36,47 @@ const {
     />
 
     <!-- Answer cards (shuffled numbers) -->
-    <div class="cards-zone memory-answers">
+    <div class="grid grid-cols-3 gap-2">
       <button
         v-for="card in state.answers" :key="card.id"
-        class="card-btn memory-answer-card"
+        class="bg-surface2 border-2 rounded-xl py-3 sm:py-4 px-1.5 text-center cursor-pointer transition-all duration-200 relative overflow-hidden"
         :class="{
-          active:   card.state === 'active',
-          revealed: card.state === 'revealed',
-          matched:  card.state === 'matched',
+          'border-[rgba(255,255,255,0.06)] hover:border-accent hover:-translate-y-0.5': card.state === 'idle',
+          'border-accent shadow-[0_0_14px_rgba(255,107,53,0.4)] -translate-y-0.5 scale-[1.04]': card.state === 'active',
+          'border-green bg-[rgba(6,214,160,0.1)] animate-correct-pulse': card.state === 'revealed',
+          'opacity-0 pointer-events-none scale-90 transition-all duration-300': card.state === 'matched',
         }"
         @click="selectAnswer(card)"
       >
-        <div class="memory-card-inner">
-          <span class="memory-card-front card-eq">{{ card.value }}</span>
-          <span class="memory-card-back  card-eq">{{ card.matchValue }}</span>
+        <!-- Flip inner -->
+        <div class="relative flex items-center justify-center"
+             :style="{ perspective: '600px' }">
+          <span
+            class="font-fredoka text-xl sm:text-2xl text-accent2 block"
+            :style="{ backfaceVisibility: 'hidden' }"
+          >{{ card.value }}</span>
         </div>
       </button>
     </div>
 
-    <div class="memory-divider"></div>
+    <!-- Divider -->
+    <div class="h-0.5 bg-surface2 rounded my-0.5"></div>
 
     <!-- Question cards (fixed equations) -->
-    <div class="cards-zone">
+    <div class="grid grid-cols-3 gap-2">
       <button
         v-for="card in state.questions" :key="card.id"
-        class="card-btn memory-question-card"
+        class="bg-surface2 border-2 rounded-xl py-3 sm:py-4 px-1.5 text-center cursor-pointer transition-all duration-200"
         :class="{
-          active:  card.state === 'active',
-          matched: card.state === 'matched',
+          'border-[rgba(255,255,255,0.06)] hover:border-accent hover:-translate-y-0.5': card.state === 'idle',
+          'border-accent shadow-[0_0_14px_rgba(255,107,53,0.4)] -translate-y-0.5 scale-[1.04]': card.state === 'active',
+          'opacity-0 pointer-events-none scale-90 transition-all duration-300': card.state === 'matched',
         }"
         @click="selectQuestion(card)"
       >
-        <span class="card-eq">{{ card.value }}</span>
+        <span class="font-fredoka text-xl sm:text-2xl text-white">{{ card.value }}</span>
       </button>
     </div>
+
   </div>
 </template>
