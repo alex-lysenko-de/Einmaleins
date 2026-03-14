@@ -1,24 +1,27 @@
 // Service Worker – Einmaleins PWA
-// Strategie: Network-first mit Cache-Fallback für alle eigenen Assets.
-// Kein statisches PRECACHE_URLS – Vite generiert gehashte Dateinamen,
-// die wir hier zur Build-Zeit nicht kennen können.
+// vite-plugin-pwa (injectManifest) ersetzt self.__WB_MANIFEST beim Build
+// durch eine Liste aller Vite-Assets mit gehashten Dateinamen.
 
 const CACHE_VERSION = 'v1'
 const CACHE_NAME = `einmaleins-${CACHE_VERSION}`
 
-// Nur diese wenigen stabilen URLs beim Install vorab laden (App Shell)
+// Stabiler App Shell (zur Build-Zeit bekannte URLs)
 const SHELL_URLS = [
   '/einmaleins/',
   '/einmaleins/index.html',
   '/einmaleins/manifest.json',
 ]
 
-// ── Install: App Shell precachen ────────────────────────────────────────────
+// Alle Vite-Assets (JS, CSS, Icons usw.) – vom Plugin beim Build injiziert
+// Im Dev-Modus leer, kein Precaching nötig
+const PRECACHE_URLS = (self.__WB_MANIFEST || []).map((entry) => entry.url)
+
+// ── Install: App Shell + alle Vite-Assets precachen ─────────────────────────
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(SHELL_URLS))
+      .then((cache) => cache.addAll([...SHELL_URLS, ...PRECACHE_URLS]))
       .then(() => self.skipWaiting())
   )
 })
@@ -39,7 +42,7 @@ self.addEventListener('activate', (event) => {
   )
 })
 
-// ── Fetch: Stale-While-Revalidate für alle eigenen Requests ─────────────────
+// ── Fetch: Cache-first für Assets, Network-first für Shell ──────────────────
 self.addEventListener('fetch', (event) => {
   const { request } = event
 
@@ -52,7 +55,6 @@ self.addEventListener('fetch', (event) => {
   const isHashedAsset = url.pathname.includes('/assets/')
 
   if (isHashedAsset) {
-    // Cache-first: einmal gecacht, nie wieder laden
     event.respondWith(
       caches.match(request).then(
         (cached) =>

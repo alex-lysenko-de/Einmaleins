@@ -14,21 +14,23 @@ export function useGames() {
 
   return [
     {
-      id:          'battle',
-      name:        'Kampf gegen Monster',
-      description: 'Beantworte Aufgaben um das Monster zu besiegen!',
-      emoji:       '👾',
-      LevelPicker: markRaw(BattleLevelPicker),
-      start:       (level) => startGame(level),
-    },
-    {
       id:          'memory',
-      name:        'Memory Spiel',
-      description: 'Finde Paare und trainiere dein Gedächtnis!',
+      name:        'Finde das Paar',
+      description: 'Wähle selbst: Aufgabe und Antwort',
       emoji:       '🃏',
       LevelPicker: markRaw(MemoryLevelPicker),
       start:       (level) => startMemory(level),
     },
+
+    {
+      id:          'battle',
+      name:        'Rückwärts',
+      description: 'Sieh die Antwort – finde die Aufgabe! (Reverse)',
+      emoji:       '👾',
+      LevelPicker: markRaw(BattleLevelPicker),
+      start:       (level) => startGame(level),
+    },
+
     {
       id:          'exam',
       name:        'Schnelltest',
