@@ -1,16 +1,14 @@
 <script setup>
 import ConfettiOverlay     from './ui/components/ConfettiOverlay.vue'
 import FlyingApplesOverlay from './ui/components/FlyingApplesOverlay.vue'
-import ThemeToggle         from './ui/components/ThemeToggle.vue'
 </script>
 
 <template>
-  <ThemeToggle class="app-theme-toggle" />
-  <RouterView v-slot="{ Component }">
-    <Transition name="page" mode="out-in">
-      <component :is="Component" />
-    </Transition>
-  </RouterView>
-  <ConfettiOverlay />
-  <FlyingApplesOverlay />
+  <div class="min-h-screen bg-bg text-white font-nunito overflow-x-hidden">
+    <div class="w-full max-w-lg mx-auto min-h-screen px-3 relative">
+      <RouterView />
+    </div>
+    <ConfettiOverlay />
+    <FlyingApplesOverlay />
+  </div>
 </template>
