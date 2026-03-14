@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from 'vue'
-import { useGames }   from '../menu/games.js'
-import GameSelection  from '../menu/GameSelection.vue'
-import LevelSelection from '../menu/LevelSelection.vue'
+import { useGames }    from '../menu/games.js'
+import GameSelection   from '../menu/GameSelection.vue'
+import LevelSelection  from '../menu/LevelSelection.vue'
+import { getPlayerName } from '../../services/playerStore.js'
+import { router } from '../../router/index.js'
 
 const games        = useGames()
 const selectedGame = ref(null)
+const playerName   = getPlayerName()
 
 function onGameSelected(game) { selectedGame.value = game }
 function onBack()             { selectedGame.value = null }
@@ -14,6 +17,17 @@ function onStart(level)       { selectedGame.value.start(level) }
 
 <template>
   <div class="flex flex-col items-center pt-6 pb-8 min-h-screen">
+
+    <!-- Top bar: player name + leaderboard button -->
+    <div class="flex justify-between items-center w-full mb-2 px-1">
+      <div class="font-nunito text-sm text-muted">
+        👤 <span class="text-white font-bold">{{ playerName }}</span>
+      </div>
+      <button
+        class="flex items-center gap-1.5 bg-surface border border-surface2 rounded-xl px-3 py-1.5 font-nunito text-sm font-bold text-muted transition-all hover:text-white hover:border-accent2"
+        @click="router.push({ name: 'leaderboard' })"
+      >🏆 Bestenliste</button>
+    </div>
 
     <!-- Characters -->
     <div class="flex justify-between items-end w-full mb-2 px-2">

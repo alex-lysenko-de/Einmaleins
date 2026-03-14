@@ -13,8 +13,17 @@ const {
   goMenu,
 } = useExam()
 
-const showApples = ref(false)
+const showApples   = ref(false)
+const scoreFlash   = ref(false)
+
+// Reset apple hint on new question
 watch(() => state.answered, () => { showApples.value = false })
+
+// Animate score when a correct answer is given
+watch(() => state.totalScore, () => {
+  scoreFlash.value = true
+  setTimeout(() => { scoreFlash.value = false }, 500)
+})
 
 onMounted(()   => document.addEventListener('keydown', handleKeydown))
 onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
@@ -29,8 +38,23 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
         class="bg-surface border border-surface2 rounded-xl px-3.5 py-2 text-muted font-nunito text-sm font-bold transition-all hover:text-white hover:border-accent"
         @click="goMenu"
       >← Menü</button>
-      <div class="bg-surface border border-surface2 rounded-xl px-4 py-2 font-fredoka text-base text-accent2">
-        Exam ×{{ state.level }}
+
+      <div class="flex gap-2">
+        <!-- Live score badge -->
+        <div
+          class="bg-surface border border-surface2 rounded-xl px-4 py-2 font-fredoka text-base transition-all duration-300"
+          :class="scoreFlash ? 'text-accent2 scale-110 border-accent2' : 'text-accent2'"
+        >
+          ★ {{ state.totalScore }}
+          <span
+            v-if="state.feedback === 'correct' && state.lastScore > 0"
+            class="text-green text-sm ml-1 animate-fade-in"
+          >+{{ state.lastScore }}</span>
+        </div>
+
+        <div class="bg-surface border border-surface2 rounded-xl px-4 py-2 font-fredoka text-base text-accent2">
+          {{ state.levels.map(l => `×${l}`).join(' ') }}
+        </div>
       </div>
     </div>
 
@@ -55,9 +79,9 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
           class="inline-flex items-center justify-center bg-surface2 rounded-xl px-4 py-1 min-w-[76px] font-fredoka text-4xl sm:text-5xl border-2 transition-all duration-200"
           :class="{
             'border-transparent': !state.input.length && state.feedback !== 'correct' && state.feedback !== 'wrong',
-            'border-accent': state.input.length > 0 && !state.feedback,
-            'bg-[rgba(6,214,160,0.15)] border-green text-green': state.feedback === 'correct',
-            'bg-[rgba(239,71,111,0.15)] border-red text-red':   state.feedback === 'wrong',
+            'border-accent':      state.input.length > 0 && !state.feedback,
+            'bg-[rgba(6,214,160,0.15)] border-green text-green':   state.feedback === 'correct',
+            'bg-[rgba(239,71,111,0.15)] border-red   text-red':    state.feedback === 'wrong',
             'animate-shake': state.shaking,
           }"
         >
